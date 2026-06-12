@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenando</title>
+    <script src="ordenando.js" defer></script>
+</head>
+<body>
+    <main>
+        <h1>Ordenando Valores</h1>
+        
+        <label for="valor">Valor</label>
+        <input type="number" id="valor" name="valor">
+
+        <button onclick="add()">Adicionar</button>
+
+        <hr>
+
+        <select id="algoritmo">
+            <option value="bubble" selected>Bubble Sort</option>
+            <option value="selection">Selection Sort</option>
+            <option value="quick">Quick Sort</option>
+        </select>
+
+        <button onclick="ordenar()">Ordenar</button>
+        <button onclick="misturar()">Misturar</button>
+
+        <hr>
+
+        <ul id="valores"></ul>
+    </main>
+
+    <script>
+        function add() {
+            var campoValor = document.getElementById('valor');
+            var listaValores = document.getElementById('valores');
+
+            var node = document.createElement("li");
+            var textnode = document.createTextNode(campoValor.value);
+
+            node.appendChild(textnode);
+            listaValores.appendChild(node);
+
+            campoValor.value = '';
+        }
+
+        function ordenar() {
+            var listaValores = document.getElementById('valores');
+            var listaSelecao = document.getElementById('algoritmo');
+
+            var vetor = Array.from(listaValores.children).map(function(item) {
+                return eval(item.innerHTML);
+            });
+
+            var algoritmoSelecionado = listaSelecao.selectedIndex;
+            if (algoritmoSelecionado == 0) {
+                bubble_sort(vetor);
+            } else if (algoritmoSelecionado == 1) {
+                selection_sort(vetor);
+            } else if (algoritmoSelecionado == 2) {
+                quick_sort(vetor, 0, vetor.length - 1);
+            }
+
+            var novosItens = vetor.map(function(item) {
+                return '<li>' + item + '</li>';
+            }).reduce(function(acumulador,item) {
+                return acumulador + item;
+            }, '');
+
+            listaValores.innerHTML = novosItens;
+    
+        }
+
+        function misturar() {
+            var listaValores = document.getElementById('valores');
+
+            var vetor = Array.from(listaValores.children).map(function(item) {
+                return eval(item.innerHTML);
+            });
+
+            suffle(vetor, vetor.length);
+
+            var novosItens = vetor.map(function(item) {
+                return '<li>' + item + '</li>';
+            }).reduce(function(acumulador,item) {
+                return acumulador + item;
+            }, '');
+            listaValores.innerHTML = novosItens;
+        }
+    </script>
+</body>
+</html>
